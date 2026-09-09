@@ -1,14 +1,15 @@
 import mysql.connector 
 import psutil as p
 import socket
+import time
 
 hostname_atual = socket.gethostname()
 
 cnx = mysql.connector.connect(
     host="localhost",
     port=3306,
-    user="root",
-    password="Naelu1821@",
+    user="nicolas",
+    password="12345",
     database="AeroGuard")
 
 cur = cnx.cursor()
@@ -33,29 +34,32 @@ LEFT JOIN ParametroMonitoramento p
     ON h.fkMaquina = p.fkMaquina 
     AND h.fkMetricas = p.fkMetrica
 WHERE m.unidadeMedida = '%'   
-ORDER BY h.horario DESC;"""
+ORDER BY h.horario DESC
+limit 3;"""
 
     cur.execute(sql)
     resultado = cur.fetchall()
     return resultado
+while True:
+    registros = select_banco()
 
-registros = select_banco()
+    print("\n" + "="*95)
+    print(f"{'HORÁRIO DO REGISTRO':<20} | {'MÉTRICA':<22} | {'DADO CAPT.':<12} | {'UNIDADE':<8} | {'LIMITE DEF.':<13} | {'STATUS ALERTA'}")
+    print("="*95)
 
-print("\n" + "="*95)
-print(f"{'ID MÁQ.':<8} | {'MÉTRICA':<22} | {'DADO CAPT.':<12} | {'UNIDADE':<8} | {'LIMITE DEF.':<13} | {'STATUS ALERTA'}")
-print("="*95)
+    for linha in registros:
+        metrica         = linha[1] 
+        unidade_medida  = linha[2]  
+        dado_capturado  = linha[3]  
+        limite_definido = linha[4] 
+        horario         = linha[5]
+        status_alerta   = linha[6]  
+        
+        dado_formatado = f"{dado_capturado:.1f}" if isinstance(dado_capturado, (int, float)) else dado_capturado
+        horario_formatado = horario.strftime("%d/%m/%Y %H:%M:%S")
 
-for linha in registros:
-    id_maquina      = linha[0]  
-    metrica         = linha[1] 
-    unidade_medida  = linha[2]  
-    dado_capturado  = linha[3]  
-    limite_definido = linha[4] 
-    status_alerta   = linha[6]  
-    
-    dado_formatado = f"{dado_capturado:.1f}" if isinstance(dado_capturado, (int, float)) else dado_capturado
+        print(f"({horario_formatado:<19} | {metrica:<22} | {dado_formatado:<12} | {unidade_medida:<8} | {limite_definido:<13} | {status_alerta}")
 
-    print(f"{id_maquina:<8} | {metrica:<22} | {dado_formatado:<12} | {unidade_medida:<8} | {limite_definido:<13} | {status_alerta}")
-
-print("="*95 + "\n")
+    print("="*95 + "\n")
+    time.sleep(1)
 

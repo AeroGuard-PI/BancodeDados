@@ -9,8 +9,8 @@ hostname_atual = socket.gethostname()
 cnx = mysql.connector.connect(
     host="localhost",
     port=3306,
-    user="root",
-    password="Naelu1821@",
+    user="nicolas",
+    password="12345",
     database="AeroGuard")
 
 cur = cnx.cursor()
