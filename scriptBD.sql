@@ -1,5 +1,6 @@
-CREATE DATABASE AeroGuard;
-USE AeroGuard;
+drop database if exists aeroguard;
+CREATE DATABASE aeroguard;
+USE aeroguard;
 
 CREATE TABLE Localizacao (
     idLocalizacao INT PRIMARY KEY AUTO_INCREMENT,
