@@ -1,0 +1,3 @@
+CREATE USER IF NOT EXISTS 'aeroguard_user'@'%' IDENTIFIED BY 'AeroGuard@2026';
+GRANT SELECT, INSERT, UPDATE, DELETE ON AeroGuard.* TO 'aeroguard_user'@'%';
+FLUSH PRIVILEGES;
