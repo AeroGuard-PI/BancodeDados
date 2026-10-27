@@ -1,0 +1,7 @@
+.venv
+*.mwb
+*.mwb.bak
+*.py
+scripProjeto
+.git
+.gitignore
