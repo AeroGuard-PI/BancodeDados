@@ -10,10 +10,12 @@ INSERT INTO localizacao (estado, cidade, cep, numero) VALUES ('SP', 'São Paulo'
 SET @local_cgh = LAST_INSERT_ID();
 
 -- 2. Cargos
-INSERT INTO cargo (nome) VALUES ('Analista de Sistemas');
+INSERT INTO cargo (nome, is_admin) VALUES ('Analista de Sistemas', 0);
 SET @analista = LAST_INSERT_ID();
-INSERT INTO cargo (nome) VALUES ('Técnico de Infraestrutura');
+INSERT INTO cargo (nome, is_admin) VALUES ('Técnico de Infraestrutura', 0);
 SET @tecnico = LAST_INSERT_ID();
+INSERT INTO cargo (nome, is_admin) VALUES ('Gestor', 1);
+SET @gestor = LAST_INSERT_ID();
 
 -- 3. Empresas (Aeroportos)
 INSERT INTO empresa (cnpj, razao_social, codigoIATA, codigoAutenticacao, fkLocalizacao)
@@ -26,7 +28,8 @@ SET @cgh = LAST_INSERT_ID();
 -- 4. Usuários de Teste
 INSERT INTO usuario (nome, telefone, email, cpf, senha, empresa_id, cargo_id) VALUES
 ('João Silva', '11982273526', 'joao.silva@email.com', '38433829392', 'SenhaSegura123', @gru, @analista),
-('Maria Oliveira', '11977665544', 'maria.oliveira@email.com', '12345678901', 'SenhaSegura456', @cgh, @tecnico);
+('Maria Oliveira', '11977665544', 'maria.oliveira@email.com', '12345678901', 'SenhaSegura456', @cgh, @tecnico),
+('Luiz', '11966554433', 'luiz@aeroguard.com', '98765432100', '123456', @gru, @gestor);
 
 -- 5. Máquinas de Monitoramento
 INSERT INTO maquina (hostname, so, macAddress, fkEmpresa)
