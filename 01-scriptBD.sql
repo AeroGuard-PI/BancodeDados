@@ -1,7 +1,7 @@
 SET NAMES utf8mb4;
 SET CHARACTER SET utf8mb4;
 
-CREATE DATABASE IF NOT EXISTS AeroGuard CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS AeroGuard CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 USE AeroGuard;
 
 CREATE TABLE localizacao (
@@ -97,9 +97,17 @@ CREATE TABLE captura (
 );
 
 CREATE TABLE discretizacao (
-	id INT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    empresa_id INT NOT NULL,
+    config_maquina_id INT NOT NULL,
     limite INT NOT NULL,
-    nivel_alerta VARCHAR(20) NOT NULL
+    nivel_alerta VARCHAR(20) NOT NULL,
+    CONSTRAINT fk_discretizacao_empresa
+        FOREIGN KEY (empresa_id) REFERENCES empresa(id),
+    CONSTRAINT fk_config_maquina
+        FOREIGN KEY (config_maquina_id) REFERENCES configuracao_maquina(id),
+    CONSTRAINT uq_discretizacao_config_nivel
+        UNIQUE (config_maquina_id, nivel_alerta)
 );
 
 CREATE TABLE historico_alerta(
